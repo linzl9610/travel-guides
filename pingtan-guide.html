@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>平潭岛 · 五一自驾攻略 | 5.2-5.3</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+:root {
+  --bg: #0a1628;
+  --card: #111d32;
+  --accent: #00b4d8;
+  --gold: #f4a261;
+  --danger: #e76f51;
+  --green: #2a9d8f;
+  --text: #e0e1dd;
+  --muted: #8892a4;
+  --border: rgba(255,255,255,0.06);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--bg); color:var(--text); line-height:1.6; overflow-x:hidden; }
+body::before { content:''; position:fixed; top:0;left:0;right:0;bottom:0; background:radial-gradient(ellipse at 60% 20%, rgba(0,180,216,0.06) 0%, transparent 60%), radial-gradient(ellipse at 30% 80%, rgba(42,157,143,0.04) 0%, transparent 60%); pointer-events:none; z-index:0; }
+
+/* Nav */
+nav { position:sticky; top:0; z-index:100; background:rgba(10,22,40,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:0 1rem; display:flex; gap:.25rem; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+nav a { color:var(--muted); text-decoration:none; padding:.7rem .9rem; font-size:.85rem; white-space:nowrap; border-bottom:2px solid transparent; transition:all .2s; }
+nav a:hover, nav a.active { color:var(--accent); border-bottom-color:var(--accent); }
+
+/* Sections */
+section { position:relative; z-index:1; max-width:900px; margin:0 auto; padding:2rem 1.25rem; display:none; }
+section.active { display:block; }
+
+/* Hero */
+.hero { text-align:center; padding:3rem 1.25rem 2rem; }
+.hero h1 { font-size:clamp(2rem,5vw,3.2rem); background:linear-gradient(135deg, var(--accent), var(--green)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:.5rem; }
+.hero .meta { color:var(--muted); font-size:.9rem; }
+.hero .badges { display:flex; gap:.5rem; justify-content:center; flex-wrap:wrap; margin-top:1rem; }
+.badge { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:.3rem .8rem; font-size:.8rem; color:var(--accent); }
+
+/* Cards */
+.card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1.25rem; margin-bottom:1rem; }
+.card h3 { font-size:1.1rem; margin-bottom:.6rem; color:var(--accent); }
+.card .sub { color:var(--muted); font-size:.8rem; }
+
+/* Timeline */
+.timeline { position:relative; padding-left:2rem; }
+.timeline::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom, var(--accent), var(--green)); }
+.tl-item { position:relative; margin-bottom:1.2rem; cursor:pointer; }
+.tl-item::before { content:''; position:absolute; left:-2rem; top:6px; width:14px; height:14px; border-radius:50%; background:var(--accent); border:3px solid var(--bg); }
+.tl-dot.gold::before { background:var(--gold); }
+.tl-dot.green::before { background:var(--green); }
+.tl-dot.red::before { background:var(--danger); }
+.tl-time { font-size:.75rem; color:var(--accent); font-weight:700; letter-spacing:.5px; }
+.tl-title { font-size:.95rem; font-weight:600; }
+.tl-detail { display:none; margin-top:.5rem; padding:.8rem; background:rgba(0,180,216,0.05); border-radius:8px; font-size:.85rem; color:var(--muted); }
+.tl-item.open .tl-detail { display:block; }
+
+/* Tables */
+table { width:100%; border-collapse:collapse; font-size:.82rem; margin:.8rem 0; }
+th { text-align:left; padding:.5rem .6rem; color:var(--accent); border-bottom:1px solid var(--border); font-size:.75rem; text-transform:uppercase; letter-spacing:.5px; }
+td { padding:.5rem .6rem; border-bottom:1px solid var(--border); }
+tr:hover td { background:rgba(0,180,216,0.03); }
+
+/* Risk indicators */
+.risk { display:inline-block; padding:.15rem .5rem; border-radius:10px; font-size:.75rem; font-weight:700; }
+.risk-red { background:rgba(231,111,81,.15); color:var(--danger); }
+.risk-yellow { background:rgba(244,162,97,.15); color:var(--gold); }
+.risk-green { background:rgba(42,157,143,.15); color:var(--green); }
+
+/* Map */
+#map { height:400px; border-radius:12px; border:1px solid var(--border); margin:.8rem 0; }
+.leaflet-container { background:var(--bg) !important; }
+.leaflet-control-zoom a { background:var(--card) !important; color:var(--text) !important; border-color:var(--border) !important; }
+
+/* Hotel card */
+.hotel-card { display:flex; gap:1rem; flex-wrap:wrap; }
+.hotel-card .h-img { width:120px; height:90px; border-radius:8px; background:var(--card); display:flex; align-items:center; justify-content:center; font-size:3rem; }
+.hotel-card .h-info { flex:1; min-width:200px; }
+.hotel-tags { display:flex; gap:.4rem; flex-wrap:wrap; margin-top:.5rem; }
+.hotel-tags span { background:rgba(0,180,216,.1); color:var(--accent); padding:.2rem .6rem; border-radius:10px; font-size:.7rem; }
+
+/* Buttons */
+.btn { display:inline-block; padding:.6rem 1.2rem; border-radius:8px; border:none; font-size:.85rem; font-weight:600; cursor:pointer; transition:all .2s; text-decoration:none; }
+.btn-accent { background:var(--accent); color:#fff; }
+.btn-outline { background:transparent; border:1px solid var(--accent); color:var(--accent); }
+
+/* Responsive */
+@media(max-width:600px) {
+  nav { gap:0; }
+  nav a { padding:.5rem .6rem; font-size:.78rem; }
+  section { padding:1.5rem .8rem; }
+  .hero { padding:2rem .8rem 1.5rem; }
+}
+
+/* Countdown */
+.countdown { text-align:center; font-size:1.8rem; font-weight:700; color:var(--gold); margin:1rem 0; }
+.countdown small { display:block; font-size:.7rem; color:var(--muted); font-weight:400; }
+
+/* Route line */
+.route-desc { font-family:"Cascadia Code",monospace; font-size:.78rem; color:var(--muted); background:rgba(0,0,0,.3); padding:.6rem .8rem; border-radius:6px; white-space:pre-wrap; }
+
+/* Accordion */
+.accordion-header { cursor:pointer; display:flex; justify-content:space-between; align-items:center; padding:.8rem 0; border-bottom:1px solid var(--border); user-select:none; }
+.accordion-header::after { content:'+'; font-size:1.2rem; color:var(--accent); transition:transform .3s; }
+.accordion-header.open::after { transform:rotate(45deg); }
+.accordion-body { display:none; padding:.8rem 0; font-size:.85rem; color:var(--muted); }
+.accordion-body.open { display:block; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#hero" class="active" onclick="switchTab(event,'hero')">🏠 总览</a>
+  <a href="#hotel" onclick="switchTab(event,'hotel')">🏨 住宿</a>
+  <a href="#timeline-section" onclick="switchTab(event,'timeline-section')">⏱ 行程</a>
+  <a href="#traffic" onclick="switchTab(event,'traffic')">🚗 交通与拥堵</a>
+  <a href="#routes" onclick="switchTab(event,'routes')">🗺 游玩路线</a>
+  <a href="#bluetears" onclick="switchTab(event,'bluetears')">💧 蓝眼泪</a>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section id="hero" class="active">
+  <div class="hero">
+    <h1>🌊 平潭岛 · 五一自驾</h1>
+    <div class="meta">5月2日（周六）— 5月3日（周日） · 一行6人 · 泉州晋江出发</div>
+    <div class="badges">
+      <span class="badge">👨‍👩‍👦 父母+夫妻+4岁男童+妻妹</span>
+      <span class="badge">🚗 自驾G15+京台</span>
+      <span class="badge">🏨 花度影院·龙王头</span>
+      <span class="badge">🚄 G258 福州站13:00→上海虹桥</span>
+    </div>
+    <div class="countdown" id="countdown">加载中...<small>距离出发</small></div>
+  </div>
+  <div class="card">
+    <h3>📋 快速总览</h3>
+    <table>
+      <tr><td style="width:80px;color:var(--accent)">D1</td><td>泉州→平潭自驾 / 北线精华（仙人井→北港→长江澳日落）→ 夜追蓝眼泪</td></tr>
+      <tr><td style="width:80px;color:var(--accent)">D2</td><td>龙王头沙滩 → 9:30出发福州站 → G258前往上海</td></tr>
+      <tr><td style="width:80px;color:var(--gold)">住宿</td><td><strong>平潭岛花度影院酒店</strong> · 西航路新区10号楼 ｜ ¥514/间·2间</td></tr>
+      <tr><td style="width:80px;color:var(--gold)">停车</td><td>✅ <strong>酒店自有免费停车场</strong>（2019年装修，20㎡客房，近龙王头）</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ========== HOTEL ========== -->
+<section id="hotel">
+  <h2 style="color:var(--accent);margin-bottom:1rem;">🏨 住宿详情</h2>
+  <div class="card">
+    <div class="hotel-card">
+      <div class="h-img">🏨</div>
+      <div class="h-info">
+        <h3>平潭岛花度影院酒店（龙王头沙滩店）</h3>
+        <p style="color:var(--muted);font-size:.85rem;">📍 平潭县西航路新区10号楼（谭人街边上）<br>⭐ 携程4.5分 · 2522条评论 · 2016开业/2019装修</p>
+        <div class="hotel-tags">
+          <span>✅ 免费停车场</span><span>🛏 2间·¥514/间</span><span>📍 近龙王头</span><span>🎬 影院投影</span><span>🏪 谭人街美食</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🅿️ 停车攻略</h3>
+    <table>
+      <tr><td>酒店停车</td><td>✅ <strong>自有免费停车场</strong> · 360地图标注确认</td></tr>
+      <tr><td>备选停车</td><td>西航路沿线有公共停车位；酒店周边500m内"行蛐侧路停车场"</td></tr>
+      <tr><td>自驾贴士</td><td>酒店位于西航路近谭人街，周边餐饮/超市密集，停车后步行即可解决一切</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>📊 酒店优势分析</h3>
+    <table>
+      <tr><th>维度</th><th>评分</th><th>说明</th></tr>
+      <tr><td>性价比</td><td style="color:var(--green)">⭐⭐⭐⭐⭐</td><td>五一期间¥514/间，龙王头区域很有竞争力</td></tr>
+      <tr><td>评论可信度</td><td style="color:var(--green)">⭐⭐⭐⭐⭐</td><td>2522条评论维持4.5分，基数大可信</td></tr>
+      <tr><td>地理位置</td><td style="color:var(--green)">⭐⭐⭐⭐</td><td>西航路谭人街，距龙王头约1.5km，南北线出发都方便</td></tr>
+      <tr><td>设施新旧</td><td style="color:var(--gold)">⭐⭐⭐</td><td>2019年装修已6年，但维护尚可（评分可证）</td></tr>
+      <tr><td>停车场</td><td style="color:var(--green)">⭐⭐⭐⭐⭐</td><td>免费，五一高峰期车位充足是第一要务</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ========== TIMELINE ========== -->
+<section id="timeline-section">
+  <h2 style="color:var(--accent);margin-bottom:1rem;">⏱ 两天一夜行程时间线</h2>
+  <p style="color:var(--muted);font-size:.8rem;margin-bottom:1rem;">💡 点击每个时间点展开详情</p>
+  
+  <h3 style="color:var(--gold);margin:1.2rem 0 .6rem;">📅 5月2日（周六）— D1</h3>
+  <div class="timeline" id="tl-d1">
+    <div class="tl-item tl-dot" onclick="this.classList.toggle('open')">
+      <div class="tl-time">07:30</div><div class="tl-title">🚗 泉州晋江出发</div>
+      <div class="tl-detail">G15沈海高速→G3京台→平潭海峡公铁大桥（约150km，2h）。⏰ 提前到7:30避开进岛高峰。</div>
+    </div>
+    <div class="tl-item tl-dot" onclick="this.classList.toggle('open')">
+      <div class="tl-time">09:30</div><div class="tl-title">🌉 平潭海峡公铁大桥上岛</div>
+      <div class="tl-detail">免费通行，双向六车道。桥上可远眺海景。预计缓行15min。</div>
+    </div>
+    <div class="tl-item tl-dot" onclick="this.classList.toggle('open')">
+      <div class="tl-time">10:00</div><div class="tl-title">🏨 花度影院酒店入住</div>
+      <div class="tl-detail">西航路新区10号楼，停车后休整。谭人街附近有超市/餐厅，就地午餐。</div>
+    </div>
+    <div class="tl-item tl-dot" onclick="this.classList.toggle('open')">
+      <div class="tl-time">12:00</div><div class="tl-title">🍽 午餐（城区/谭人街）</div>
+      <div class="tl-detail">推荐海鲜大排档或本地小吃。老人和小孩可回房间午休。</div>
+    </div>
+    <div class="tl-item tl-dot green" onclick="this.classList.toggle('open')">
+      <div class="tl-time">14:30</div><div class="tl-title">🏖 龙王头沙滩（轻松玩水）</div>
+      <div class="tl-detail">⭐ 带4岁男童挖沙，老人海边散步。注意防晒+防风。</div>
+    </div>
+    <div class="tl-item tl-dot green" onclick="this.classList.toggle('open')">
+      <div class="tl-time">16:00</div><div class="tl-title">🗿 北线出发：仙人井→北港村</div>
+      <div class="tl-detail">从龙王头沿环岛东路向北。仙人井含门票，北港村有石头厝和文创小店可拍照。</div>
+    </div>
+    <div class="tl-item tl-dot gold" onclick="this.classList.toggle('open')">
+      <div class="tl-time">17:30</div><div class="tl-title">🌅 长江澳风车田（日落 18:20）</div>
+      <div class="tl-detail">⚠️ 五一7:30-19:30管制，游客车辆需在"山门前"换乘接驳车。凭民宿订单可驶入但不可掉头。建议车停北港村后乘接驳车前往。</div>
+    </div>
+    <div class="tl-item tl-dot" onclick="this.classList.toggle('open')">
+      <div class="tl-time">19:30</div><div class="tl-title">🍽 晚餐（城区/北港村）</div>
+      <div class="tl-detail">吃完回酒店休息，准备追泪装备。</div>
+    </div>
+    <div class="tl-item tl-dot gold" onclick="this.classList.toggle('open')">
+      <div class="tl-time">20:30-23:00</div><div class="tl-title">💧 追蓝眼泪</div>
+      <div class="tl-detail">高发区：长江澳/坛南湾/龙王头/东美村。关注"畅游平潭"小程序实时概率预报。注意4岁男童保暖+防滑鞋。</div>
+    </div>
+  </div>
+
+  <h3 style="color:var(--accent);margin:1.8rem 0 .6rem;">📅 5月3日（周日）— D2</h3>
+  <div class="timeline" id="tl-d2">
+    <div class="tl-item tl-dot" onclick="this.classList.toggle('open')">
+      <div class="tl-time">05:30</div><div class="tl-title">🌅 龙王头日出（可选）</div>
+      <div class="tl-detail">日出约5:29AM。老人/小孩不强制，想看的自行前往（步行可达）。</div>
+    </div>
+    <div class="tl-item tl-dot" onclick="this.classList.toggle('open')">
+      <div class="tl-time">07:30</div><div class="tl-title">🍳 早餐+退房</div>
+      <div class="tl-detail">谭人街早餐店。退房、装车完毕。</div>
+    </div>
+    <div class="tl-item tl-dot green" onclick="this.classList.toggle('open')">
+      <div class="tl-time">08:30-09:15</div><div class="tl-title">🏖 龙王头最后玩水</div>
+      <div class="tl-detail">最后45分钟海边时光。9:15前必须回车。</div>
+    </div>
+    <div class="tl-item tl-dot red" onclick="this.classList.toggle('open')">
+      <div class="tl-time">09:30 ⚠️</div><div class="tl-title">🚗 出发→福州站（严守！）</div>
+      <div class="tl-detail">京台高速约120km/1h30min。⚠️ 福州站北三环辅道五一8:00-12:00易堵，预留30min缓冲。</div>
+    </div>
+    <div class="tl-item tl-dot" onclick="this.classList.toggle('open')">
+      <div class="tl-time">11:00</div><div class="tl-title">🚉 抵达福州站</div>
+      <div class="tl-detail">福州站北广场停车场停车，你和妻儿进站。父母+妻妹确认下一步行程。</div>
+    </div>
+    <div class="tl-item tl-dot red" onclick="this.classList.toggle('open')">
+      <div class="tl-time">13:00</div><div class="tl-title">🚄 G258 福州站→上海虹桥</div>
+      <div class="tl-detail">提前1h40min到站。你和妻儿出发。⏰ 父母+妻妹后续由他们自行安排返回泉州/晋江。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== TRAFFIC ========== -->
+<section id="traffic">
+  <h2 style="color:var(--accent);margin-bottom:1rem;">🚗 交通管制与拥堵研判</h2>
+  <p style="color:var(--muted);font-size:.8rem;margin-bottom:1rem;">依据：平潭交警微发布 2026/4/28 + 福建交警/福州高速五一出行提示 2026/4/28-29</p>
+
+  <div class="card">
+    <h3>⚠️ 平潭岛内五一管制（5/1-5/5）</h3>
+    <table>
+      <tr><th>管制区域</th><th>时间</th><th>核心措施</th><th>对你的影响</th></tr>
+      <tr>
+        <td>北港—长江澳</td><td>每日7:30-19:30</td><td>游客车辆在"山门前"换乘接驳车</td>
+        <td><span class="risk risk-red">🔴 高</span> 5/2下午北线需换乘</td>
+      </tr>
+      <tr>
+        <td>北部生态廊道</td><td>每日9:00-19:30</td><td>单循环，车辆不可驶入廊道</td>
+        <td><span class="risk risk-red">🔴 高</span> 5/2如去需全换乘</td>
+      </tr>
+      <tr>
+        <td>龙王头路口</td><td>每日8:00-23:00</td><td>禁止掉头转弯</td>
+        <td><span class="risk risk-yellow">🟡 中</span> 注意导航提示</td>
+      </tr>
+      <tr>
+        <td>68小镇</td><td>每日8:00-19:00</td><td>需换乘接驳车</td>
+        <td><span class="risk risk-green">🟢 低</span> 你走北线不受影响</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>🛣 高速路段拥堵风险</h3>
+    <table>
+      <tr><th>路段</th><th>风险</th><th>依据</th><th>建议</th></tr>
+      <tr>
+        <td>G15沈海 泉州-莆田段</td>
+        <td><span class="risk risk-red">🔴 高</span></td>
+        <td>福建交警：全省最繁忙路段</td>
+        <td>7:30前出发避开9-12点高峰</td>
+      </tr>
+      <tr>
+        <td>京台高速进平潭段</td>
+        <td><span class="risk risk-yellow">🟡 中高</span></td>
+        <td>福州高速：京台长乐收费站可能排队</td>
+        <td>比原计划提前1.5小时出发</td>
+      </tr>
+      <tr>
+        <td>平潭海峡公铁大桥</td>
+        <td><span class="risk risk-yellow">🟡 中</span></td>
+        <td>双向六车道，节假日缓行15-30min</td>
+        <td>桥上车流大但可通行</td>
+      </tr>
+      <tr>
+        <td>京台高速 平潭→福州</td>
+        <td><span class="risk risk-yellow">🟡 中</span></td>
+        <td>进福州方向比出城方向好</td>
+        <td>5/3早上9:30出发即可</td>
+      </tr>
+      <tr>
+        <td>福州站北三环辅道</td>
+        <td><span class="risk risk-yellow">🟠 中高</span></td>
+        <td>福州交警：8:00-12:00易堵路段</td>
+        <td>预留30min堵车余量</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>📊 五一出行趋势</h3>
+    <table>
+      <tr><td>旅游预订</td><td>福建整体同比增<strong style="color:var(--danger)">+40%</strong>，省外客源超60%</td></tr>
+      <tr><td>自驾占比</td><td>超 <strong style="color:var(--danger)">70%</strong>，"高铁落地+租车"成主流</td></tr>
+      <tr><td>高峰日</td><td>5月1日最高峰，<strong>5月2-3日仍属高位</strong></td></tr>
+      <tr><td>平潭车流</td><td>4月30日起增长明显，租车需求尤为突出</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ========== ROUTES ========== -->
+<section id="routes">
+  <h2 style="color:var(--accent);margin-bottom:1rem;">🗺 游玩路线 + 地图</h2>
+  <div id="map"></div>
+  
+  <div class="card">
+    <h3>🧭 北线半日游（5/2 下午推荐）</h3>
+    <div class="route-desc">
+龙王头出发 → 驾车12min → ①仙人井(40min)
+  ↓ 驾车8min
+②北港村(40min) 🅿️停车
+  ↓ 接驳车15min（五一管制）
+③最美环岛路(拍照)
+  ↓ 步行10min
+④长江澳风车田(1h) 🌅
+  ↓ 接驳车返回取车
+回龙王头</div>
+  </div>
+
+  <div class="card">
+    <h3>🚗 平潭→福州站路线</h3>
+    <div class="route-desc">
+花度酒店(西航路) → 中山大道 → 京台高速G3(平潭入口)
+行驶80km → 福州绕城高速(福州北) → 福州站出口
+全程120km · 约1h30min · 导航: 福州站北广场停车场</div>
+  </div>
+
+  <div class="card">
+    <h3>🚗 泉州晋江→平潭路线</h3>
+    <div class="route-desc">
+泉州晋江 → G15沈海高速(福州方向) → 转G3京台 → 平潭海峡公铁大桥
+全程约150km · 正常2h · 五一建议2.5h</div>
+  </div>
+</section>
+
+<!-- ========== BLUE TEARS ========== -->
+<section id="bluetears">
+  <h2 style="color:var(--accent);margin-bottom:1rem;">💧 蓝眼泪追泪指南</h2>
+  <div class="card">
+    <h3>📊 5月初追泪条件</h3>
+    <table>
+      <tr><td>最佳月份</td><td>4-5月为夜光藻蓝眼泪高发期 ✅ 你正好在窗口</td></tr>
+      <tr><td>最佳时间</td><td>晚上20:00-凌晨1:00，涨潮时段更活跃</td></tr>
+      <tr><td>高发区域</td><td>长江澳、坛南湾、龙王头、东美村</td></tr>
+      <tr><td>查询工具</td><td>微信"<strong>畅游平潭</strong>"小程序 → 蓝眼泪概率预报（3-5天定点预报）</td></tr>
+      <tr><td>必备条件</td><td>南风天 + 水温回暖 + 弱风 + 涨潮</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>🎒 追泪装备清单</h3>
+    <table>
+      <tr><td>🧥 防风外套</td><td>平潭晚上风大！老人和孩子必穿</td></tr>
+      <tr><td>🔦 手电筒</td><td>红光模式最好（减少对蓝眼泪的干扰）</td></tr>
+      <tr><td>👟 防滑鞋</td><td>礁石区湿滑，不要穿拖鞋</td></tr>
+      <tr><td>🦟 防蚊液</td><td>海边蚊虫多</td></tr>
+      <tr><td>📱 手机</td><td>保持电量，随时查小程序预报</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>⚠️ 重要提醒</h3>
+    <p style="color:var(--muted);">蓝眼泪是自然现象，<strong>无法保证100%看到</strong>。加入民宿/酒店追泪微信群获取实时动态；夜间海边必须有成年人陪同老人小孩；不要单独去偏僻礁石区域。</p>
+  </div>
+</section>
+
+<script>
+// Tab switching
+function switchTab(e, id) {
+  e.preventDefault();
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  e.target.classList.add('active');
+  document.getElementById(id).classList.add('active');
+  if (id === 'routes' && !window._mapInit) initMap();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Countdown timer
+function updateCountdown() {
+  var target = new Date('2026-05-02T07:30:00');
+  var now = new Date();
+  var diff = target - now;
+  var el = document.getElementById('countdown');
+  if (diff <= 0) { el.innerHTML = '🚀 出发中！<small>祝旅途愉快</small>'; return; }
+  var d = Math.floor(diff / 86400000);
+  var h = Math.floor((diff % 86400000) / 3600000);
+  var m = Math.floor((diff % 3600000) / 60000);
+  el.innerHTML = d + '天 ' + h + '时 ' + m + '分<small>距离出发 5月2日 7:30</small>';
+}
+updateCountdown();
+setInterval(updateCountdown, 60000);
+
+// Map
+var _mapInit = false;
+function initMap() {
+  _mapInit = true;
+  var map = L.map('map').setView([25.52, 119.79], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution:'© OSM', maxZoom:18
+  }).addTo(map);
+
+  var hotelIcon = L.divIcon({className:'', html:'<div style="background:#f4a261;color:#000;padding:2px 6px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap">🏨 花度影院</div>', iconSize:[0,0]});
+  var siteIcon = L.divIcon({className:'', html:'<div style="background:#00b4d8;color:#000;padding:2px 5px;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap">📍 ','</div>', iconSize:[0,0]});
+  var fzIcon = L.divIcon({className:'', html:'<div style="background:#e76f51;color:#fff;padding:2px 5px;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap">🚄 福州站</div>', iconSize:[0,0]});
+
+  var spots = [
+    {name:'花度影院酒店',lat:25.508,lon:119.79, icon:hotelIcon},
+    {name:'龙王头沙滩',lat:25.515,lon:119.808, icon:L.divIcon({html:'<div style="background:#00b4d8;color:#000;padding:2px 5px;border-radius:4px;font-size:10px;white-space:nowrap">🏖 龙王头</div>'})},
+    {name:'仙人井',lat:25.528,lon:119.815},
+    {name:'北港村',lat:25.545,lon:119.825},
+    {name:'长江澳',lat:25.565,lon:119.838, icon:L.divIcon({html:'<div style="background:#00b4d8;color:#000;padding:2px 5px;border-radius:4px;font-size:10px;white-space:nowrap">🌅 长江澳</div>'})},
+    {name:'坛南湾',lat:25.47,lon:119.79},
+    {name:'福州站',lat:26.115,lon:119.32, icon:fzIcon},
+  ];
+  spots.forEach(function(s) {
+    var icon = s.icon || L.divIcon({html:'<div style="background:#00b4d8;color:#000;padding:2px 5px;border-radius:4px;font-size:10px;white-space:nowrap">📍 '+s.name+'</div>'});
+    L.marker([s.lat,s.lon], {icon:icon}).addTo(map).bindPopup(s.name);
+  });
+  setTimeout(function(){ map.invalidateSize(); }, 200);
+}
+
+// Responsive map fix
+window.addEventListener('resize', function(){ if(_mapInit) map.invalidateSize(); });
+</script>
+</body>
+</html>
