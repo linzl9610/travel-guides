@@ -24,7 +24,7 @@ body::before { content:''; position:fixed; top:0;left:0;right:0;bottom:0; backgr
 
 /* Nav */
 nav { position:sticky; top:0; z-index:100; background:rgba(10,22,40,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:.4rem .8rem; display:flex; gap:.2rem; flex-wrap:wrap; justify-content:center; }
-nav a { color:var(--muted); text-decoration:none; padding:.5rem .7rem; font-size:1.0rem; white-space:nowrap; border-bottom:2px solid transparent; transition:all .2s; border-radius:6px; }
+nav a { color:var(--muted); text-decoration:none; padding:.5rem .7rem; font-size:.85rem; white-space:nowrap; border-bottom:2px solid transparent; transition:all .2s; border-radius:6px; }
 nav a:hover, nav a.active { color:var(--accent); border-bottom-color:var(--accent); background:rgba(0,180,216,.08); }
 
 /* Sections */
@@ -87,8 +87,11 @@ tr:hover td { background:rgba(0,180,216,0.03); }
 
 /* Responsive */
 @media(max-width:600px) {
-  section { padding:1.5rem .8rem; }
-  .hero { padding:2rem .8rem 1.5rem; }
+  nav { padding:.25rem .5rem; gap:.15rem; }
+  nav a { padding:.35rem .5rem; font-size:.78rem; }
+  section { padding:1rem .8rem; }
+  .hero { padding:1.5rem .8rem 1.2rem; }
+  .hero h1 { font-size:clamp(1.6rem,5vw,2rem); }
 }
 
 /* Countdown */
