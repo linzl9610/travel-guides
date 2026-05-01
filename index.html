@@ -117,6 +117,8 @@ tr:hover td { background:rgba(0,180,216,0.03); }
   <a href="#traffic" onclick="switchTab(event,'traffic')">🚗 交通与拥堵</a>
   <a href="#routes" onclick="switchTab(event,'routes')">🗺 游玩路线</a>
   <a href="#bluetears" onclick="switchTab(event,'bluetears')">💧 蓝眼泪</a>
+  <a href="#food" onclick="switchTab(event,'food')">🍽 美食</a>
+  <a href="#prep" onclick="switchTab(event,'prep')">🎒 行前准备</a>
 </nav>
 
 <!-- ========== HERO ========== -->
@@ -125,7 +127,7 @@ tr:hover td { background:rgba(0,180,216,0.03); }
     <h1>🌊 平潭岛 · 五一自驾</h1>
     <div class="meta">5月2日（周六）— 5月3日（周日） · 一行6人 · 泉州晋江出发</div>
     <div class="badges">
-      <span class="badge">👨‍👩‍👦 父母+夫妻+4岁男童+妻妹</span>
+      <span class="badge">👨‍👩‍👦 5大1小</span>
       <span class="badge">🚗 自驾G15+京台</span>
       <span class="badge">🏨 花度影院·龙王头</span>
       <span class="badge">🚄 G258 福州站13:00→上海虹桥</span>
@@ -137,7 +139,7 @@ tr:hover td { background:rgba(0,180,216,0.03); }
     <table>
       <tr><td style="width:80px;color:var(--accent)">D1</td><td>泉州→平潭自驾 / 北线精华（仙人井→北港→长江澳日落）→ 夜追蓝眼泪</td></tr>
       <tr><td style="width:80px;color:var(--accent)">D2</td><td>龙王头沙滩 → 9:30出发福州站 → G258前往上海</td></tr>
-      <tr><td style="width:80px;color:var(--gold)">住宿</td><td><strong>平潭岛花度影院酒店</strong> · 西航路新区10号楼 ｜ ¥514/间·2间</td></tr>
+      <tr><td style="width:80px;color:var(--gold)">住宿</td><td><strong>平潭岛花度影院酒店</strong> · 西航路新区10号楼 </td></tr>
       <tr><td style="width:80px;color:var(--gold)">停车</td><td>✅ <strong>酒店自有免费停车场</strong>（2019年装修，20㎡客房，近龙王头）</td></tr>
     </table>
   </div>
@@ -153,7 +155,7 @@ tr:hover td { background:rgba(0,180,216,0.03); }
         <h3>平潭岛花度影院酒店（龙王头沙滩店）</h3>
         <p style="color:var(--muted);font-size:.85rem;">📍 平潭县西航路新区10号楼（谭人街边上）<br>⭐ 携程4.5分 · 2522条评论 · 2016开业/2019装修</p>
         <div class="hotel-tags">
-          <span>✅ 免费停车场</span><span>🛏 2间·¥514/间</span><span>📍 近龙王头</span><span>🎬 影院投影</span><span>🏪 谭人街美食</span>
+          <span>✅ 免费停车场</span><span>🛏 2间</span><span>📍 近龙王头</span><span>🎬 影院投影</span><span>🏪 谭人街美食</span>
         </div>
       </div>
     </div>
@@ -161,21 +163,38 @@ tr:hover td { background:rgba(0,180,216,0.03); }
   <div class="card">
     <h3>🅿️ 停车攻略</h3>
     <table>
-      <tr><td>酒店停车</td><td>✅ <strong>自有免费停车场</strong> · 360地图标注确认</td></tr>
+      <tr><td>酒店停车</td><td>✅ <strong>自有免费停车场</strong></td></tr>
       <tr><td>备选停车</td><td>西航路沿线有公共停车位；酒店周边500m内"行蛐侧路停车场"</td></tr>
       <tr><td>自驾贴士</td><td>酒店位于西航路近谭人街，周边餐饮/超市密集，停车后步行即可解决一切</td></tr>
     </table>
   </div>
-  <div class="card">
-    <h3>📊 酒店优势分析</h3>
-    <table>
-      <tr><th>维度</th><th>评分</th><th>说明</th></tr>
-      <tr><td>性价比</td><td style="color:var(--green)">⭐⭐⭐⭐⭐</td><td>五一期间¥514/间，龙王头区域很有竞争力</td></tr>
-      <tr><td>评论可信度</td><td style="color:var(--green)">⭐⭐⭐⭐⭐</td><td>2522条评论维持4.5分，基数大可信</td></tr>
-      <tr><td>地理位置</td><td style="color:var(--green)">⭐⭐⭐⭐</td><td>西航路谭人街，距龙王头约1.5km，南北线出发都方便</td></tr>
-      <tr><td>设施新旧</td><td style="color:var(--gold)">⭐⭐⭐</td><td>2019年装修已6年，但维护尚可（评分可证）</td></tr>
-      <tr><td>停车场</td><td style="color:var(--green)">⭐⭐⭐⭐⭐</td><td>免费，五一高峰期车位充足是第一要务</td></tr>
-    </table>
+
+  <h3 style="color:var(--accent);margin:1.8rem 0 .6rem;">📅 5月3日（周日）— D2</h3>
+  <div class="timeline" id="tl-d2">
+    <div class="tl-item tl-dot" onclick="this.classList.toggle('open')">
+      <div class="tl-time">05:30</div><div class="tl-title">🌅 龙王头日出（可选）</div>
+      <div class="tl-detail">日出约5:29AM。老人/小孩不强制，想看的自行前往（步行可达）。</div>
+    </div>
+    <div class="tl-item tl-dot" onclick="this.classList.toggle('open')">
+      <div class="tl-time">07:30</div><div class="tl-title">🍳 早餐+退房</div>
+      <div class="tl-detail">谭人街早餐店。退房、装车完毕。</div>
+    </div>
+    <div class="tl-item tl-dot green" onclick="this.classList.toggle('open')">
+      <div class="tl-time">08:30-09:15</div><div class="tl-title">🏖 龙王头最后玩水</div>
+      <div class="tl-detail">最后45分钟海边时光。9:15前必须回车。</div>
+    </div>
+    <div class="tl-item tl-dot red" onclick="this.classList.toggle('open')">
+      <div class="tl-time">09:30 ⚠️</div><div class="tl-title">🚗 出发→福州站（严守！）</div>
+      <div class="tl-detail">京台高速约120km/1h30min。⚠️ 福州站北三环辅道五一8:00-12:00易堵，预留30min缓冲。</div>
+    </div>
+    <div class="tl-item tl-dot" onclick="this.classList.toggle('open')">
+      <div class="tl-time">11:00</div><div class="tl-title">🚉 抵达福州站</div>
+      <div class="tl-detail">福州站北广场停车场停车，你和妻儿进站。父母+妻妹确认下一步行程。</div>
+    </div>
+    <div class="tl-item tl-dot red" onclick="this.classList.toggle('open')">
+      <div class="tl-time">13:00</div><div class="tl-title">🚄 G258 福州站→上海虹桥</div>
+      <div class="tl-detail">提前1h40min到站。你和妻儿出发。⏰ 父母+妻妹后续由他们自行安排返回泉州/晋江。</div>
+    </div>
   </div>
 </section>
 
@@ -392,6 +411,176 @@ tr:hover td { background:rgba(0,180,216,0.03); }
     <p style="color:var(--muted);">蓝眼泪是自然现象，<strong>无法保证100%看到</strong>。加入民宿/酒店追泪微信群获取实时动态；夜间海边必须有成年人陪同老人小孩；不要单独去偏僻礁石区域。</p>
   </div>
 </section>
+
+<!-- ========== FOOD ========== -->
+<section id="food">
+  <h2 style="color:var(--accent);margin-bottom:1rem;">🍽 平潭美食攻略</h2>
+  <p style="color:var(--muted);font-size:.8rem;margin-bottom:1rem;">🥢 本地特色：时来运转（咸米时）、八珍炒糕、海蛎煎、金鲟糯米饭、天长地久（甜饺）、平潭鱼丸、头水紫菜</p>
+
+  <div class="card">
+    <h3>🥇 Plan A — 精品闽菜 · 建议提前预约</h3>
+    <table>
+      <tr><th style="width:22%">餐厅</th><th style="width:28%">特色</th><th style="width:20%">人均</th><th style="width:30%">预约 / 地址</th></tr>
+      <tr>
+        <td><strong>鄉愁·福建民間菜</strong></td>
+        <td>长汀香煎山地鸡、头水紫菜海蛎煲、生焗大黄鱼</td>
+        <td>¥64</td>
+        <td>西航海滨城2期C区6号楼1栋<br>⏰ 11:00-14:00 / 17:00-21:30<br>📞 建议提前1天预约</td>
+      </tr>
+      <tr>
+        <td><strong>林家小灶·福建菜</strong></td>
+        <td>豆豉河鳗、厦门姜母鸭、连江手工鱼饺</td>
+        <td>¥70-90</td>
+        <td>平潭西航店（近酒店）<br>新锐必吃榜，五一需排队</td>
+      </tr>
+      <tr>
+        <td><strong>嶺上·海島菜</strong></td>
+        <td>创意海鲜、环岛路海景餐厅</td>
+        <td>¥100+</td>
+        <td>环岛路北段，距市区12km<br>🌅 景观位建议提前3天订</td>
+      </tr>
+      <tr>
+        <td><strong>毛記潮汕海鮮砂鍋粥</strong></td>
+        <td>现熬砂锅粥，螃蟹+鲜虾+贝类</td>
+        <td>¥50-70</td>
+        <td>平潭市区，20年老店<br>粥品熬制需30min+，可提前电话下单</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>🥈 Plan B — 即到即食 · 小吃排档</h3>
+    <table>
+      <tr><th style="width:22%">餐厅</th><th style="width:28%">推荐</th><th style="width:20%">人均</th><th style="width:30%">地址</th></tr>
+      <tr>
+        <td><strong>清口清湯麵</strong></td>
+        <td>海鲜面，汤底清澈鲜美</td>
+        <td>¥20-35</td>
+        <td>西航路（步行可达 🏨）<br>简餐首选，老人小孩友好</td>
+      </tr>
+      <tr>
+        <td><strong>十三妹鹹米時店</strong></td>
+        <td>平潭非遗咸米时（地瓜皮+海鲜馅）</td>
+        <td>¥10-20</td>
+        <td>建工路<br>本地人从小吃到大</td>
+      </tr>
+      <tr>
+        <td><strong>陳小廚海鮮大咖</strong></td>
+        <td>海鲜大咖拼盘，琳琅满目</td>
+        <td>¥60-80</td>
+        <td>市区，距酒店1.3km<br>适合6人聚餐大份量</td>
+      </tr>
+      <tr>
+        <td><strong>阿弟海鮮館</strong></td>
+        <td>白灼虾、蒜蓉生蚝、海鲜排档</td>
+        <td>¥50-70</td>
+        <td>坛南湾店<br>如果走南线可顺路吃</td>
+      </tr>
+      <tr>
+        <td><strong>雲生海鮮樓</strong></td>
+        <td>白灼皮皮虾、螃蟹蒸白菜、焖冬粉</td>
+        <td>¥60-80</td>
+        <td>流水镇（北线方向）<br>农家别墅，家庭聚餐</td>
+      </tr>
+      <tr>
+        <td><strong>袁記串串香</strong></td>
+        <td>串串火锅，麻辣/清汤可选</td>
+        <td>¥40-60</td>
+        <td>平潭市区<br>不想吃海鲜时的备选</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>💡 就餐策略（基于你的行程）</h3>
+    <table>
+      <tr><td style="color:var(--gold);width:70px">5/2 午餐</td><td>到店中午，推荐 <strong>清口清湯麵</strong>（西航路步行可达）或 <strong>鄉愁·福建民間菜</strong>（提前约），吃完回酒店休整</td></tr>
+      <tr><td style="color:var(--gold)">5/2 晚餐</td><td>北线回来，推荐 <strong>陳小廚海鮮大咖</strong> 或 <strong>林家小灶</strong>，6人刚好一大桌</td></tr>
+      <tr><td style="color:var(--gold)">5/3 早餐</td><td>谭人街路边早餐店，或 <strong>十三妹鹹米時</strong> 打包带走</td></tr>
+      <tr><td style="color:var(--gold)">儿童</td><td>清口清湯麵和砂锅粥最友好；海鲜排档可点白灼虾/蒸蛋</td></tr>
+    </table>
+  </div>
+</section>
+
+
+<!-- ========== PREP ========== -->
+<section id="prep">
+  <h2 style="color:var(--accent);margin-bottom:1rem;">🎒 行前准备清单</h2>
+
+  <div class="card">
+    <h3>📋 必带物品</h3>
+    <table>
+      <tr><td>🧴 防晒</td><td>高倍防晒霜、遮阳帽、太阳镜、防晒衣 — <strong style="color:var(--danger)">平潭紫外线极强，海风不代表不晒！</strong></td></tr>
+      <tr><td>🧥 防风外套</td><td>平潭以"风大"闻名，晚上温差大，老人和孩子必带一件防风外套</td></tr>
+      <tr><td>👟 鞋子</td><td>沙滩凉鞋/洞洞鞋 + 防滑运动鞋（礁石区湿滑，不要穿拖鞋！）</td></tr>
+      <tr><td>🔦 手电筒</td><td>红光模式最佳（减少对蓝眼泪干扰），追泪必备</td></tr>
+      <tr><td>🦟 防蚊液</td><td>海边蚊虫多，尤其傍晚</td></tr>
+      <tr><td>📱 充电宝</td><td>保持手机电量，随时查小程序预报</td></tr>
+      <tr><td>👶 儿童</td><td>挖沙玩具、备用衣裤2套、儿童防晒霜、小零食</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>📱 小程序 & 门票预约（提前做！）</h3>
+    <table>
+      <tr><th style="width:28%">项目</th><th style="width:35%">渠道</th><th style="width:37%">注意事项</th></tr>
+      <tr>
+        <td>🔵 蓝眼泪预报</td>
+        <td>微信小程序 <strong>"畅游平潭"</strong></td>
+        <td>3-5天定点概率预报 + 实时追泪群动态<br>出发前每天查看！</td>
+      </tr>
+      <tr>
+        <td>🎫 仙人井门票</td>
+        <td>小程序 <strong>"一部手机游平潭"</strong><br>或 美团搜索"仙人井"</td>
+        <td>成人 ¥33，双人 ¥66，家庭2大1小 ¥82<br><span style="color:var(--danger)">五一建议提前1-2天购票</span></td>
+      </tr>
+      <tr>
+        <td>🚌 景区接驳</td>
+        <td>"畅游平潭" 小程序</td>
+        <td>查看五一交通管制实时状态<br>北港→长江澳接驳车无需预约</td>
+      </tr>
+      <tr>
+        <td>🏨 酒店确认</td>
+        <td>携程APP</td>
+        <td>出发当天确认订单 + 加酒店微信<br>酒店追泪微信群会发实时动态</td>
+      </tr>
+      <tr>
+        <td>🗺 离线地图</td>
+        <td>高德/百度地图</td>
+        <td>提前下载平潭离线地图包<br>岛上信号可能不稳定</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>⚠️ 避坑指南</h3>
+    <table>
+      <tr><td style="color:var(--danger);width:70px">🔴 雷区1</td><td><strong>不要信"付费带你看蓝眼泪"</strong> — 蓝眼泪是自然现象，无法保证100%看到。任何收费保证都是骗人的。正规渠道只有"畅游平潭"小程序。</td></tr>
+      <tr><td style="color:var(--danger)">🔴 雷区2</td><td><strong>五一停车极度困难</strong> — 景区停车场早上9:00前就满。北线建议把车停北港村，然后乘接驳车前往长江澳。</td></tr>
+      <tr><td style="color:var(--danger)">🔴 雷区3</td><td><strong>海鲜点菜先问价</strong> — 尤其是按斤称的海鲜（螃蟹、龙虾、石斑鱼），点菜前确认价格和重量，避免"海鲜刺客"。</td></tr>
+      <tr><td style="color:var(--gold)">🟡 注意4</td><td><strong>北部生态廊道是单行道</strong> — 入口在白青乡方向，不可逆行。五一9:00-19:30全换乘，自驾车停接驳点。</td></tr>
+      <tr><td style="color:var(--gold)">🟡 注意5</td><td><strong>帽子要有防风绳</strong> — 平潭常年风大，普通帽子秒飞。老人和孩子的帽子务必加固。</td></tr>
+      <tr><td style="color:var(--gold)">🟡 注意6</td><td><strong>晚上礁石区禁止儿童进入</strong> — 追泪时必须有成年人专门看护4岁儿童，远离湿滑礁石。</td></tr>
+      <tr><td style="color:var(--green)">🟢 贴士</td><td><strong>加入酒店追泪群</strong> — 民宿/酒店老板通常有实时追泪微信群，哪里出现蓝眼泪马上知道，比小程序快。</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>✅ 出发前检查清单</h3>
+    <table>
+      <tr><td><input type="checkbox" style="accent-color:var(--accent)"> 下载"畅游平潭"+"一部手机游平潭"小程序</td></tr>
+      <tr><td><input type="checkbox" style="accent-color:var(--accent)"> 仙人井门票提前购买（美团/小程序）</td></tr>
+      <tr><td><input type="checkbox" style="accent-color:var(--accent)"> 高德/百度离线地图已下载</td></tr>
+      <tr><td><input type="checkbox" style="accent-color:var(--accent)"> 防晒霜+防风外套+防滑鞋+手电筒 装包</td></tr>
+      <tr><td><input type="checkbox" style="accent-color:var(--accent)"> 儿童物品（挖沙玩具/备用衣裤/零食）装包</td></tr>
+      <tr><td><input type="checkbox" style="accent-color:var(--accent)"> 携程确认酒店订单 + 加酒店微信</td></tr>
+      <tr><td><input type="checkbox" style="accent-color:var(--accent)"> 车辆检查：胎压、油量、备胎</td></tr>
+      <tr><td><input type="checkbox" style="accent-color:var(--accent)"> 身份证（所有人！火车站+酒店都要用）</td></tr>
+      <tr><td><input type="checkbox" style="accent-color:var(--accent)"> G258高铁票已确认（福州站13:00→上海虹桥）</td></tr>
+    </table>
+  </div>
+</section>
+
 
 <script>
 // Tab switching
